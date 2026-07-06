@@ -17,7 +17,7 @@ const btnRight = document.getElementById("btnRight");
 // ============================================================
 let carPosition = 175;
 let obstaclePosition = -100;
-let obstacleSpeed = 4;
+let obstacleSpeed = 7;
 let gameInterval;
 let isGameOver = false;
 
