@@ -150,12 +150,6 @@ body {
 }
 
 /* ============================================================ */
-/* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
-/* ============================================================ */
-/* ============================================================ */
-/* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
-/* ============================================================ */
-/* ============================================================ */
 /* PANTALLA DE PRESENTACIÓN (CONTENEDOR PRINCIPAL) */
 /* ============================================================ */
 #presentation {
@@ -164,7 +158,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    overflow: hidden; /* Para que la imagen no se salga */
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -173,32 +167,35 @@ body {
 }
 
 /* ============================================================ */
-/* IMAGEN DE FONDO CON MOVIMIENTO (NUEVO) */
+/* IMAGEN DE FONDO CON DESPLAZAMIENTO COMPLETO (DERECHA → IZQUIERDA) */
 /* ============================================================ */
 #fondoMovil {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 150%;  /* Un poco más ancha que la pantalla */
     height: 100%;
     background-image: url('ud-no-aprende.jpg');
     background-size: cover;
-    background-position: center center;
     background-repeat: no-repeat;
-    /* === ANIMACIÓN DE DESPLAZAMIENTO LENTO === */
-    animation: moverFondo 20s ease-in-out infinite alternate;
+    /* === ANIMACIÓN === */
+    animation: moverCarruselCompleto 20s ease-in-out infinite alternate;
+    will-change: transform, background-position;
     z-index: 0;
 }
 
-/* === ANIMACIÓN DE DESPLAZAMIENTO DE LA IMAGEN === */
-@keyframes moverFondo {
+@keyframes moverCarruselCompleto {
     0% {
-        transform: scale(1.05);  /* Un poco más grande para que se mueva */
-        background-position: center center;
+        transform: translateX(0%);
+        background-position: left center;   /* Empieza mostrando la izquierda */
+    }
+    50% {
+        transform: translateX(-20%);
+        background-position: center center;  /* Mitad del recorrido: centro */
     }
     100% {
-        transform: scale(1.1);   /* Zoom suave */
-        background-position: center 30%; /* Se mueve hacia arriba */
+        transform: translateX(-40%);
+        background-position: right center;   /* Termina mostrando la derecha */
     }
 }
 
@@ -216,19 +213,16 @@ body {
     z-index: 1;
 }
 
-/* El contenido de la presentación queda POR ENCIMA */
+/* === CONTENIDO (FIJO) === */
 .presentation-content {
     position: relative;
-    z-index: 2; /* Por encima de la niebla y la imagen */
+    z-index: 2;
     text-align: center;
     max-width: 700px;
     padding: 40px;
     animation: fadeInUp 1.5s ease-out;
 }
 
-/* ============================================================ */
-/* (El resto del CSS queda igual) */
-/* ============================================================ */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -298,7 +292,7 @@ body {
 
 .credits {
     margin-top: 30px;
-    color: #555577;
+    color: #191925;
     font-size: 14px;
     letter-spacing: 1px;
 }
