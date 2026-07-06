@@ -152,6 +152,9 @@ body {
 /* ============================================================ */
 /* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
 /* ============================================================ */
+/* ============================================================ */
+/* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
+/* ============================================================ */
 #presentation {
     position: fixed;
     top: 0;
@@ -160,8 +163,9 @@ body {
     height: 100vh;
     background-image: url('ud-no-aprende.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
+    animation: moverFondo 20s ease-in-out infinite alternate;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,6 +173,7 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
+/* === CAPA DE NIEBLA (DIFUMINADO) === */
 #presentation::before {
     content: '';
     position: absolute;
@@ -182,6 +187,17 @@ body {
     z-index: 0;
 }
 
+/* === ANIMACIÓN DE DESPLAZAMIENTO LENTO === */
+@keyframes moverFondo {
+    0% {
+        background-position: center center;
+    }
+    100% {
+        background-position: center 20%;  /* Se mueve hacia arriba */
+    }
+}
+
+/* El contenido de la presentación queda POR ENCIMA de la niebla */
 .presentation-content {
     position: relative;
     z-index: 1;
@@ -190,7 +206,6 @@ body {
     padding: 40px;
     animation: fadeInUp 1.5s ease-out;
 }
-
 @keyframes fadeInUp {
     0% {
         opacity: 0;
