@@ -214,7 +214,7 @@ function restartGame() {
     obstacle.style.top = obstaclePosition + "px";
     obstacle.style.left = Math.random() * 340 + 5 + "px";
 
-    obstacleSpeed = 4;
+    obstacleSpeed = 6;
     isGameOver = false;
 
     document.getElementById("gameArea").style.animation = "";
