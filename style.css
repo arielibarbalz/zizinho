@@ -155,22 +155,51 @@ body {
 /* ============================================================ */
 /* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
 /* ============================================================ */
+/* ============================================================ */
+/* PANTALLA DE PRESENTACIÓN (CONTENEDOR PRINCIPAL) */
+/* ============================================================ */
 #presentation {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background-image: url('ud-no-aprende.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    animation: moverFondo 20s ease-in-out infinite alternate;
+    overflow: hidden; /* Para que la imagen no se salga */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     font-family: 'Arial', sans-serif;
+}
+
+/* ============================================================ */
+/* IMAGEN DE FONDO CON MOVIMIENTO (NUEVO) */
+/* ============================================================ */
+#fondoMovil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('ud-no-aprende.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* === ANIMACIÓN DE DESPLAZAMIENTO LENTO === */
+    animation: moverFondo 20s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+/* === ANIMACIÓN DE DESPLAZAMIENTO DE LA IMAGEN === */
+@keyframes moverFondo {
+    0% {
+        transform: scale(1.05);  /* Un poco más grande para que se mueva */
+        background-position: center center;
+    }
+    100% {
+        transform: scale(1.1);   /* Zoom suave */
+        background-position: center 30%; /* Se mueve hacia arriba */
+    }
 }
 
 /* === CAPA DE NIEBLA (DIFUMINADO) === */
@@ -184,28 +213,22 @@ body {
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    z-index: 0;
+    z-index: 1;
 }
 
-/* === ANIMACIÓN DE DESPLAZAMIENTO LENTO === */
-@keyframes moverFondo {
-    0% {
-        background-position: center center;
-    }
-    100% {
-        background-position: center 20%;  /* Se mueve hacia arriba */
-    }
-}
-
-/* El contenido de la presentación queda POR ENCIMA de la niebla */
+/* El contenido de la presentación queda POR ENCIMA */
 .presentation-content {
     position: relative;
-    z-index: 1;
+    z-index: 2; /* Por encima de la niebla y la imagen */
     text-align: center;
     max-width: 700px;
     padding: 40px;
     animation: fadeInUp 1.5s ease-out;
 }
+
+/* ============================================================ */
+/* (El resto del CSS queda igual) */
+/* ============================================================ */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
