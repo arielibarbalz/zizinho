@@ -95,7 +95,6 @@ body {
     animation: jumpscare 0.3s ease-out;
 }
 
-/* Animación de jumpscare */
 @keyframes jumpscare {
     0% {
         transform: scale(3);
@@ -107,7 +106,6 @@ body {
     }
 }
 
-/* Tu imagen de rostro en el jumpscare */
 #faceImage {
     width: 300px;
     height: 300px;
@@ -118,7 +116,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Texto de "¡HAS PERDIDO!" */
 #gameOverText {
     color: #ff0040;
     font-size: 42px;
@@ -134,7 +131,6 @@ body {
     100% { transform: scale(1.05); }
 }
 
-/* Botón para reiniciar */
 #restartBtn {
     padding: 12px 40px;
     font-size: 20px;
@@ -162,12 +158,10 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    /* === IMAGEN DE FONDO === */
     background-image: url('ud-no-aprende.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* === SUPERPOSICIÓN === */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -175,7 +169,6 @@ body {
     font-family: 'Arial', sans-serif;
 }
 
-/* === CAPA DE NIEBLA (DIFUMINADO) === */
 #presentation::before {
     content: '';
     position: absolute;
@@ -183,14 +176,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* === EFECTO NIEBLA === */
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 0;
 }
 
-/* El contenido de la presentación queda POR ENCIMA de la niebla */
 .presentation-content {
     position: relative;
     z-index: 1;
@@ -200,7 +191,6 @@ body {
     animation: fadeInUp 1.5s ease-out;
 }
 
-/* Animación de entrada */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -212,7 +202,6 @@ body {
     }
 }
 
-/* Título principal */
 .game-title {
     font-size: 58px;
     font-weight: 900;
@@ -224,7 +213,6 @@ body {
     letter-spacing: 2px;
 }
 
-/* Subtítulo */
 .game-subtitle {
     font-size: 22px;
     color: #b8b8d4;
@@ -238,7 +226,6 @@ body {
     -webkit-text-fill-color: #ff6b6b;
 }
 
-/* Línea divisoria */
 .divider {
     width: 80px;
     height: 3px;
@@ -248,7 +235,6 @@ body {
     box-shadow: 0 0 20px rgba(247, 151, 30, 0.4);
 }
 
-/* Botón de comenzar */
 .start-button {
     padding: 18px 50px;
     font-size: 22px;
@@ -272,7 +258,6 @@ body {
     transform: scale(0.95);
 }
 
-/* Créditos */
 .credits {
     margin-top: 30px;
     color: #555577;
@@ -291,6 +276,64 @@ body {
     height: 100vh;
     z-index: 1000;
     background: #1a1a2e;
+}
+
+/* ============================================================ */
+/* CONTROLES TÁCTILES PARA MÓVILES */
+/* ============================================================ */
+#touchControls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+}
+
+.touch-btn:active {
+    transform: scale(0.85);
+    background: rgba(255, 255, 255, 0.5);
+    border-color: #00ff88;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+}
+
+/* Ocultar botones en PC (se ven con teclado) */
+@media (min-width: 768px) {
+    #touchControls {
+        display: none;
+    }
+}
+
+/* Mostrar botones en móviles */
+@media (max-width: 767px) {
+    #touchControls {
+        display: flex;
+    }
 }
 
 /* ============================================================ */

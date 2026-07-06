@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Juego de Autos</title>
     <link rel="stylesheet" href="style.css">
     <!-- Librería para sonidos retro -->
@@ -14,10 +14,18 @@
         <!-- El auto del jugador -->
         <div id="car"></div>
         
-        <!-- El obstáculo (auto enemigo) -->
+        <!-- El obstáculo (corzuela) -->
         <div id="obstacle"></div>
 
-        <!-- Pantalla de Game Over con tu rostro -->
+        <!-- ============================================================ -->
+        <!-- BOTONES TÁCTILES PARA MÓVILES -->
+        <!-- ============================================================ -->
+        <div id="touchControls">
+            <button id="btnLeft" class="touch-btn">◀</button>
+            <button id="btnRight" class="touch-btn">▶</button>
+        </div>
+
+        <!-- Pantalla de Game Over -->
         <div id="gameOverScreen">
             <img id="faceImage" src="zizi.png" alt="Tu cara">
             <p id="gameOverText">¡HAS PERDIDO!</p>

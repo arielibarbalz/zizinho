@@ -7,16 +7,22 @@ const gameOverScreen = document.getElementById("gameOverScreen");
 const restartBtn = document.getElementById("restartBtn");
 
 // ============================================================
-// VARIABLES DEL JUEGO
+// REFERENCIAS A BOTONES TÁCTILES
 // ============================================================
-let carPosition = 175;        // Posición X del auto
-let obstaclePosition = -100;   // Posición Y del obstáculo
-let obstacleSpeed = 6;        // Velocidad del obstáculo
-let gameInterval;             // ID del intervalo
-let isGameOver = false;       // Estado del juego
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
 
 // ============================================================
-// VARIABLES PARA LA MÚSICA DE FONDO (MARIO BROS NORMAL)
+// VARIABLES DEL JUEGO
+// ============================================================
+let carPosition = 175;
+let obstaclePosition = -100;
+let obstacleSpeed = 4;
+let gameInterval;
+let isGameOver = false;
+
+// ============================================================
+// VARIABLES PARA LA MÚSICA DE FONDO (MARIO BROS)
 // ============================================================
 let musicaFondo = null;
 let musicaFondoIniciada = false;
@@ -27,10 +33,10 @@ let musicaFondoIniciada = false;
 let musicaGameOver = null;
 
 // ============================================================
-// CONTROLES (FLECHAS IZQUIERDA Y DERECHA)
+// CONTROLES DE TECLADO
 // ============================================================
 document.addEventListener("keydown", (e) => {
-    if (isGameOver) return;  // Si el juego terminó, no se mueve
+    if (isGameOver) return;
 
     if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         if (carPosition > 5) {
@@ -47,7 +53,38 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ============================================================
-// FUNCIONES PARA LA MÚSICA DE FONDO (NORMAL)
+// CONTROLES TÁCTILES PARA MÓVILES
+// ============================================================
+function moverIzquierda() {
+    if (isGameOver) return;
+    if (carPosition > 5) {
+        carPosition -= 25;
+        car.style.left = carPosition + "px";
+    }
+}
+
+function moverDerecha() {
+    if (isGameOver) return;
+    if (carPosition < 345) {
+        carPosition += 25;
+        car.style.left = carPosition + "px";
+    }
+}
+
+btnLeft.addEventListener("click", moverIzquierda);
+btnLeft.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moverIzquierda();
+});
+
+btnRight.addEventListener("click", moverDerecha);
+btnRight.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moverDerecha();
+});
+
+// ============================================================
+// FUNCIONES PARA LA MÚSICA DE FONDO
 // ============================================================
 function iniciarMusicaFondo() {
     try {
@@ -81,7 +118,7 @@ function reproducirMusicaGameOver() {
     try {
         musicaGameOver = new Audio('mario-bros game over.mp3');
         musicaGameOver.volume = 0.4;
-        musicaGameOver.loop = false;  // Suena una sola vez
+        musicaGameOver.loop = false;
         musicaGameOver.play();
         console.log("🎵 Música de Game Over de Mario");
     } catch (e) {
@@ -104,21 +141,15 @@ function detenerMusicaGameOver() {
 function moveObstacle() {
     if (isGameOver) return;
 
-    // Mover el obstáculo hacia abajo
     obstaclePosition += obstacleSpeed;
     obstacle.style.top = obstaclePosition + "px";
 
-    // Si sale de la pantalla, reaparece arriba en una posición aleatoria
     if (obstaclePosition > 600) {
         obstaclePosition = -100;
         obstacle.style.left = Math.random() * 340 + 5 + "px";
-        // Aumentar velocidad progresivamente (dificultad)
         obstacleSpeed += 0.1;
     }
 
-    // ============================================================
-    // DETECCIÓN DE COLISIÓN
-    // ============================================================
     const carRect = car.getBoundingClientRect();
     const obstacleRect = obstacle.getBoundingClientRect();
 
@@ -133,23 +164,15 @@ function moveObstacle() {
 }
 
 // ============================================================
-// FUNCIÓN DE GAME OVER (OPCIÓN 2)
+// FUNCIÓN DE GAME OVER
 // ============================================================
 function gameOver() {
     if (isGameOver) return;
     isGameOver = true;
 
-    // Detener el movimiento
     clearInterval(gameInterval);
-
-    // ============================================================
-    // 1. DETENER LA MÚSICA DE FONDO (MARIO BROS NORMAL)
-    // ============================================================
     detenerMusicaFondo();
 
-    // ============================================================
-    // 2. REPRODUCIR SONIDO DE EXPLOSIÓN
-    // ============================================================
     try {
         const explosionSound = sfxr("explosion");
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -164,26 +187,15 @@ function gameOver() {
         console.log("Sonido de explosión no disponible:", e);
     }
 
-    // ============================================================
-    // 3. REPRODUCIR GRITO
-    // ============================================================
     try {
         const audioPersonalizado = new Audio('grito.mp3');
         audioPersonalizado.volume = 0.5;
         audioPersonalizado.play();
-        console.log("🔊 Grito");
     } catch (e) {
         console.log("Audio personalizado no disponible:", e);
     }
 
-    // ============================================================
-    // 4. REPRODUCIR MÚSICA DE GAME OVER (MARIO)
-    // ============================================================
     reproducirMusicaGameOver();
-
-    // ============================================================
-    // 5. MOSTRAR JUMPSACRE
-    // ============================================================
     gameOverScreen.style.display = "flex";
     document.getElementById("gameArea").style.animation = "shake 0.5s";
 }
@@ -192,19 +204,9 @@ function gameOver() {
 // FUNCIÓN PARA REINICIAR EL JUEGO
 // ============================================================
 function restartGame() {
-    // ============================================================
-    // DETENER MÚSICA DE GAME OVER
-    // ============================================================
     detenerMusicaGameOver();
-
-    // ============================================================
-    // OCULTAR PANTALLA DE GAME OVER
-    // ============================================================
     gameOverScreen.style.display = "none";
 
-    // ============================================================
-    // REINICIAR POSICIONES
-    // ============================================================
     carPosition = 175;
     car.style.left = carPosition + "px";
 
@@ -216,34 +218,24 @@ function restartGame() {
     isGameOver = false;
 
     document.getElementById("gameArea").style.animation = "";
-
-    // ============================================================
-    // REINICIAR MÚSICA DE FONDO (MARIO NORMAL)
-    // ============================================================
     iniciarMusicaFondo();
 
-    // ============================================================
-    // REINICIAR EL JUEGO
-    // ============================================================
     if (gameInterval) {
         clearInterval(gameInterval);
     }
     gameInterval = setInterval(moveObstacle, 20);
 }
 
-// ============================================================
-// EVENTO DEL BOTÓN DE REINICIO
-// ============================================================
 restartBtn.addEventListener("click", restartGame);
 
 // ============================================================
 // INICIAR EL JUEGO
 // ============================================================
 gameInterval = setInterval(moveObstacle, 20);
-iniciarMusicaFondo();  // Arranca la música de Mario Bros normal
+iniciarMusicaFondo();
 
 // ============================================================
-// EFECTO DE VIBRACIÓN PARA EL JUMPSACRE
+// EFECTO DE VIBRACIÓN
 // ============================================================
 const styleShake = document.createElement("style");
 styleShake.textContent = `
