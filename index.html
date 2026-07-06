@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las Aventuras de Zizi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- PANTALLA DE PRESENTACIÓN -->
+    <div id="presentation">
+        <div class="presentation-content">
+            <!-- Título épico -->
+            <h1 class="game-title">⚡ ZIZI ADVENTURES ⚡</h1>
+            
+            <!-- Subtítulo / Descripción -->
+            <p class="game-subtitle">
+                Velocidad, peligro y... <span class="highlight">corzuelas</span>
+            </p>
+            
+            <!-- Línea decorativa -->
+            <div class="divider"></div>
+            
+            <!-- Botón para comenzar -->
+            <button id="startBtn" class="start-button">
+                🚗
+            </button>
+            
+            <!-- Créditos / Footer -->
+            <p class="credits">Powered by Tununu % Zizi engineers</p>
+        </div>
+    </div>
+
+    <!-- El juego se cargará aquí -->
+    <div id="gameContainer" style="display:none;"></div>
+
+    <script>
+        // Cuando el usuario haga clic en "Comenzar", cargamos el juego
+        document.getElementById("startBtn").addEventListener("click", function() {
+            // Ocultar la presentación
+            document.getElementById("presentation").style.display = "none";
+            
+            // Mostrar el contenedor del juego
+            document.getElementById("gameContainer").style.display = "block";
+            
+            // Cargar el juego dinámicamente
+            loadGame();
+        });
+
+        function loadGame() {
+            // Crear un iframe para cargar juego.html (el juego real)
+            const iframe = document.createElement("iframe");
+            iframe.src = "juego.html";
+            iframe.style.width = "100%";
+            iframe.style.height = "100vh";
+            iframe.style.border = "none";
+            iframe.style.position = "fixed";
+            iframe.style.top = "0";
+            iframe.style.left = "0";
+            iframe.style.zIndex = "1000";
+            
+            document.getElementById("gameContainer").appendChild(iframe);
+        }
+    </script>
+</body>
+</html>

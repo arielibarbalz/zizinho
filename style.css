@@ -1,0 +1,311 @@
+/* ============================================================ */
+/* RESET Y FONDO GENERAL */
+/* ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* ============================================================ */
+/* ÁREA DEL JUEGO */
+/* ============================================================ */
+#gameArea {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    background: #2d2d44;
+    border: 3px solid #00ff88;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+}
+
+/* ============================================================ */
+/* AUTO DEL JUGADOR */
+/* ============================================================ */
+#car {
+    position: absolute;
+    width: 50px;
+    height: 90px;
+    background: #ff4444;
+    bottom: 20px;
+    left: 175px;
+    border-radius: 8px 8px 4px 4px;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+    z-index: 2;
+    transition: left 0.05s;
+}
+
+/* Ventanas del auto */
+#car::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    width: 30px;
+    height: 25px;
+    background: #88ccff;
+    border-radius: 5px 5px 0 0;
+    opacity: 0.7;
+}
+
+/* ============================================================ */
+/* OBSTÁCULO (CORZUELA) */
+/* ============================================================ */
+#obstacle {
+    position: absolute;
+    width: 60px;
+    height: 95px;
+    background-image: url('corzuela.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    top: -100px;
+    left: 175px;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: 1;
+}
+
+/* ============================================================ */
+/* PANTALLA DE GAME OVER (JUMPSACRE) */
+/* ============================================================ */
+#gameOverScreen {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: jumpscare 0.3s ease-out;
+}
+
+/* Animación de jumpscare */
+@keyframes jumpscare {
+    0% {
+        transform: scale(3);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Tu imagen de rostro en el jumpscare */
+#faceImage {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #ff0040;
+    box-shadow: 0 0 60px rgba(255, 0, 64, 0.8);
+    margin-bottom: 20px;
+}
+
+/* Texto de "¡HAS PERDIDO!" */
+#gameOverText {
+    color: #ff0040;
+    font-size: 42px;
+    font-weight: bold;
+    text-shadow: 0 0 30px rgba(255, 0, 64, 0.8);
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    animation: pulse 0.8s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+/* Botón para reiniciar */
+#restartBtn {
+    padding: 12px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    background: #00ff88;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+#restartBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.8);
+}
+
+/* ============================================================ */
+/* PANTALLA DE PRESENTACIÓN (CON IMAGEN DE FONDO Y NIEBLA) */
+/* ============================================================ */
+#presentation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    /* === IMAGEN DE FONDO === */
+    background-image: url('ud-no-aprende.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* === SUPERPOSICIÓN === */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Arial', sans-serif;
+}
+
+/* === CAPA DE NIEBLA (DIFUMINADO) === */
+#presentation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* === EFECTO NIEBLA === */
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+}
+
+/* El contenido de la presentación queda POR ENCIMA de la niebla */
+.presentation-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    padding: 40px;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título principal */
+.game-title {
+    font-size: 58px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 60px rgba(247, 151, 30, 0.3);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+/* Subtítulo */
+.game-subtitle {
+    font-size: 22px;
+    color: #b8b8d4;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.game-subtitle .highlight {
+    color: #ff6b6b;
+    font-weight: bold;
+    -webkit-text-fill-color: #ff6b6b;
+}
+
+/* Línea divisoria */
+.divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    margin: 25px auto;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(247, 151, 30, 0.4);
+}
+
+/* Botón de comenzar */
+.start-button {
+    padding: 18px 50px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #1a1a2e;
+    background: linear-gradient(90deg, #f7971e, #ffd200);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 40px rgba(247, 151, 30, 0.3);
+    letter-spacing: 2px;
+}
+
+.start-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 70px rgba(247, 151, 30, 0.6);
+}
+
+.start-button:active {
+    transform: scale(0.95);
+}
+
+/* Créditos */
+.credits {
+    margin-top: 30px;
+    color: #555577;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* ============================================================ */
+/* CONTENEDOR DEL JUEGO (para el iframe) */
+/* ============================================================ */
+#gameContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+    background: #1a1a2e;
+}
+
+/* ============================================================ */
+/* EFECTO DE VIBRACIÓN PARA EL JUMPSACRE */
+/* ============================================================ */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    10% { transform: translateX(-15px); }
+    20% { transform: translateX(15px); }
+    30% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    50% { transform: translateX(-5px); }
+    60% { transform: translateX(5px); }
+    70% { transform: translateX(-2px); }
+    80% { transform: translateX(2px); }
+    90% { transform: translateX(-1px); }
+    100% { transform: translateX(0); }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Autos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Librería para sonidos retro -->
+    <script src="https://sfxr.me/riffwave.js"></script>
+    <script src="https://sfxr.me/sfxr.js"></script>
+</head>
+<body>
+    <div id="gameArea">
+        <!-- El auto del jugador -->
+        <div id="car"></div>
+        
+        <!-- El obstáculo (auto enemigo) -->
+        <div id="obstacle"></div>
+
+        <!-- Pantalla de Game Over con tu rostro -->
+        <div id="gameOverScreen">
+            <img id="faceImage" src="zizi.png" alt="Tu cara">
+            <p id="gameOverText">¡HAS PERDIDO!</p>
+            <button id="restartBtn">Jugar de nuevo</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
