@@ -5,6 +5,10 @@ const car = document.getElementById("car");
 const obstacle = document.getElementById("obstacle");
 const gameOverScreen = document.getElementById("gameOverScreen");
 const restartBtn = document.getElementById("restartBtn");
+const premio = document.getElementById("premio");
+const contadorPuntos = document.getElementById("contadorPuntos");
+const victoriaScreen = document.getElementById("victoriaScreen");
+const reiniciarVictoriaBtn = document.getElementById("reiniciarVictoriaBtn");
 
 // ============================================================
 // REFERENCIAS A BOTONES TÁCTILES
@@ -31,6 +35,19 @@ let musicaFondoIniciada = false;
 // VARIABLES PARA LA MÚSICA DE GAME OVER (MARIO)
 // ============================================================
 let musicaGameOver = null;
+
+// ============================================================
+// VARIABLES PARA EL PREMIO (CHORIZO)
+// ============================================================
+let puntaje = 0;
+let premioActivo = false;
+let intervaloPremio = null;
+
+// ============================================================
+// VARIABLE PARA CONTROLAR LA DIFICULTAD
+// ============================================================
+let velocidadBase = 7;
+let incrementoDificultad = 0;
 
 // ============================================================
 // CONTROLES DE TECLADO
@@ -141,13 +158,17 @@ function detenerMusicaGameOver() {
 function moveObstacle() {
     if (isGameOver) return;
 
-    obstaclePosition += obstacleSpeed;
+    incrementoDificultad += 0.002;
+    let velocidadActual = velocidadBase + incrementoDificultad;
+    if (velocidadActual > 18) velocidadActual = 18;
+
+    obstaclePosition += velocidadActual;
     obstacle.style.top = obstaclePosition + "px";
 
     if (obstaclePosition > 600) {
         obstaclePosition = -100;
         obstacle.style.left = Math.random() * 340 + 5 + "px";
-        obstacleSpeed += 0.1;
+        velocidadBase += 0.15;
     }
 
     const carRect = car.getBoundingClientRect();
@@ -168,9 +189,14 @@ function moveObstacle() {
 // ============================================================
 function gameOver() {
     if (isGameOver) return;
+    if (puntaje >= 5) return; // Si ya ganó, no hacer game over
+    
     isGameOver = true;
 
     clearInterval(gameInterval);
+    if (intervaloPremio) clearInterval(intervaloPremio);
+    premio.style.display = "none";
+    premioActivo = false;
     detenerMusicaFondo();
 
     try {
@@ -201,9 +227,105 @@ function gameOver() {
 }
 
 // ============================================================
+// FUNCIÓN PARA APARECER EL PREMIO (CHORIZO)
+// ============================================================
+function generarPremio() {
+    if (isGameOver || premioActivo) return;
+
+    console.log("🥩 ¡Generando chorizo!");
+
+    premioActivo = true;
+    premio.style.display = "block";
+    premio.style.left = Math.random() * 330 + 10 + "px";
+    premio.style.top = "-50px";
+
+    let posY = -50;
+    const caerPremio = setInterval(() => {
+        if (isGameOver) {
+            clearInterval(caerPremio);
+            premio.style.display = "none";
+            premioActivo = false;
+            return;
+        }
+
+        posY += 5;
+        premio.style.top = posY + "px";
+
+        if (posY > 620) {
+            clearInterval(caerPremio);
+            premio.style.display = "none";
+            premioActivo = false;
+            return;
+        }
+
+        const carRect = car.getBoundingClientRect();
+        const premioRect = premio.getBoundingClientRect();
+
+        if (
+            carRect.left < premioRect.right &&
+            carRect.right > premioRect.left &&
+            carRect.top < premioRect.bottom &&
+            carRect.bottom > premioRect.top
+        ) {
+            clearInterval(caerPremio);
+            premio.style.display = "none";
+            premioActivo = false;
+
+            puntaje++;
+            contadorPuntos.textContent = puntaje;
+            console.log("🎉 ¡Chorizo recogido! Puntaje:", puntaje);
+
+            // === VERIFICAR SI GANÓ ===
+if (puntaje >= 4) {
+    isGameOver = true;
+    clearInterval(gameInterval);
+    if (intervaloPremio) clearInterval(intervaloPremio);
+    detenerMusicaFondo();
+    
+    victoriaScreen.style.display = "flex";
+    premio.style.display = "none";
+    premioActivo = false;
+    
+    // === REPRODUCIR "LA CAMISA" ===
+    try {
+        const audioCamisa = new Audio('lacamisa.mp3');
+        audioCamisa.volume = 0.7;
+        audioCamisa.loop = false;
+        audioCamisa.play();
+        console.log("🎵 Reproduciendo: La Camisa");
+    } catch(e) {
+        console.log("❌ Error con el audio 'lacamisa.mp3':", e);
+        // Si no encuentra el audio, intenta con el alternativo
+        try {
+            const audioVictoria = new Audio('victoria.mp3');
+            audioVictoria.volume = 0.5;
+            audioVictoria.play();
+        } catch(e2) {
+            console.log("Sonido de victoria alternativo no disponible");
+        }
+    }
+    return;
+}
+
+            car.style.boxShadow = "0 0 30px rgba(255, 200, 0, 0.9)";
+            setTimeout(() => {
+                car.style.boxShadow = "0 0 15px rgba(255, 68, 68, 0.5)";
+            }, 300);
+
+            try {
+                const audioPremio = new Audio('chorizo.mp3');
+                audioPremio.volume = 0.3;
+                audioPremio.play();
+            } catch(e) {}
+        }
+    }, 30);
+}
+
+// ============================================================
 // FUNCIÓN PARA REINICIAR EL JUEGO
 // ============================================================
 function restartGame() {
+    victoriaScreen.style.display = "none";
     detenerMusicaGameOver();
     gameOverScreen.style.display = "none";
 
@@ -215,24 +337,51 @@ function restartGame() {
     obstacle.style.left = Math.random() * 340 + 5 + "px";
 
     obstacleSpeed = 6;
+    velocidadBase = 7;
+    incrementoDificultad = 0;
     isGameOver = false;
+    puntaje = 0;
+    contadorPuntos.textContent = "0";
+    premioActivo = false;
+    premio.style.display = "none";
 
     document.getElementById("gameArea").style.animation = "";
     iniciarMusicaFondo();
 
-    if (gameInterval) {
-        clearInterval(gameInterval);
-    }
+    if (gameInterval) clearInterval(gameInterval);
+    if (intervaloPremio) clearInterval(intervaloPremio);
+
     gameInterval = setInterval(moveObstacle, 20);
+    intervaloPremio = setInterval(() => {
+        if (!isGameOver) {
+            generarPremio();
+        }
+    }, 4000);
 }
 
 restartBtn.addEventListener("click", restartGame);
+
+// ============================================================
+// FUNCIÓN PARA REINICIAR DESDE LA VICTORIA
+// ============================================================
+function reiniciarDesdeVictoria() {
+    victoriaScreen.style.display = "none";
+    restartGame();
+}
+
+reiniciarVictoriaBtn.addEventListener("click", reiniciarDesdeVictoria);
 
 // ============================================================
 // INICIAR EL JUEGO
 // ============================================================
 gameInterval = setInterval(moveObstacle, 20);
 iniciarMusicaFondo();
+
+intervaloPremio = setInterval(() => {
+    if (!isGameOver) {
+        generarPremio();
+    }
+}, 4000);
 
 // ============================================================
 // EFECTO DE VIBRACIÓN

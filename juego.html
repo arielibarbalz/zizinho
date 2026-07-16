@@ -11,11 +11,20 @@
 </head>
 <body>
     <div id="gameArea">
+
+        <!-- Puntuación -->
+<div id="puntaje" style="position:absolute; top:10px; right:15px; color:#00ff88; font-size:18px; font-weight:bold; z-index:5; text-shadow:0 0 10px rgba(0,255,136,0.5);">
+    🥩 Chorizo de burro: <span id="contadorPuntos">0</span>
+</div>
+
         <!-- El auto del jugador -->
         <div id="car"></div>
         
         <!-- El obstáculo (corzuela) -->
         <div id="obstacle"></div>
+
+        <!-- Premio (chorizo) -->
+<div id="premio" style="position:absolute; width:40px; height:40px; background-image:url('chorizo.png'); background-size:contain; background-repeat:no-repeat; top:-100px; left:50px; z-index:1; display:none;"></div>
 
         <!-- ============================================================ -->
         <!-- BOTONES TÁCTILES PARA MÓVILES -->
@@ -30,6 +39,17 @@
             <img id="faceImage" src="zizi.png" alt="Tu cara">
             <p id="gameOverText">¡HORITAS AL 100!</p>
             <button id="restartBtn">Jugar de nuevo</button>
+        </div>
+                <!-- Pantalla de Victoria -->
+        <div id="victoriaScreen" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.92); z-index:100; flex-direction:column; justify-content:center; align-items:center; animation:jumpscare 0.5s ease-out;">
+            <!-- Imagen de la camisa blanca -->
+            <img id="camisaImg" src="camisablanca.png" alt="Camisa Blanca" style="width:200px; height:200px; object-fit:contain; margin-bottom:15px; border-radius:20px; box-shadow:0 0 50px rgba(255,215,0,0.3);">
+            
+            <div style="font-size:60px; margin-bottom:5px;">🎉</div>
+            <h1 style="color:#ffd700; font-size:42px; text-shadow:0 0 30px rgba(255,215,0,0.8); margin-bottom:5px;">¡GANASTE!</h1>
+            <button id="reiniciarVictoriaBtn" style="padding:15px 50px; font-size:22px; font-weight:bold; background:linear-gradient(90deg, #f7971e, #ffd200); color:#1a1a2e; border:none; border-radius:50px; cursor:pointer; box-shadow:0 0 40px rgba(247,151,30,0.4); transition:all 0.3s;">
+                🚗 Jugar de nuevo
+            </button>
         </div>
     </div>
 
